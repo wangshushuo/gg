@@ -17,7 +17,7 @@ func MergeRequest() cli.Command {
 	mergeRequest := cli.Command{
 		Name:    "mr",
 		Aliases: []string{"pr", "r"},
-		Usage:   "post a merge request",
+		Usage:   "发起一个 merge request",
 		Flags: []cli.Flag{
 			&cli.StringFlag{Name: "target", Aliases: []string{"t"}, Usage: "指定目标分支"},
 		},
@@ -58,7 +58,7 @@ func MergeRequest() cli.Command {
 }
 
 func readBranchName() string {
-	fmt.Print("Enter a name as the temp source branch:")
+	fmt.Print("输入一个临时分支名：")
 	reader := bufio.NewReader(os.Stdin)
 	branchName, err := reader.ReadString('\n')
 	if err != nil {
@@ -101,10 +101,10 @@ func writeToClipboard(messages []string) {
 		if isMergeRequestURL {
 			err := clipboard.WriteAll(message)
 			if err != nil {
-				fmt.Println("Clipboard operation failed 😫")
+				fmt.Println("Clipboard 操作失败 😫")
 				log.Fatal(err)
 			}
-			fmt.Println("The merge_request_url has been written to the operation clip 😎")
+			fmt.Println("The merge_request_url 已经添加到 Clipboard 可以直接 ctrl + v 了 😎")
 			break
 		}
 	}
