@@ -13,15 +13,16 @@ import (
 )
 
 func MergeRequest() cli.Command {
-	sourceBranch := readBranchName()
-	targetBranch := getNameOfCurrentBranch()
-	fmt.Printf("The name of current branch is [%s], and it will be the target branch.\n", targetBranch)
-	fmt.Println(" ")
+
 	mergeRequest := cli.Command{
 		Name:    "mr",
 		Aliases: []string{"pr", "r"},
 		Usage:   "post a merge request",
 		Action: func(c *cli.Context) error {
+			sourceBranch := readBranchName()
+			targetBranch := getNameOfCurrentBranch()
+			fmt.Printf("The name of current branch is [%s], and it will be the target branch.\n", targetBranch)
+			fmt.Println(" ")
 
 			targetFlag := "-o merge_request.target=" + targetBranch
 			createFlag := "-o merge_request.create"

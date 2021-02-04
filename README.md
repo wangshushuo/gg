@@ -1,6 +1,10 @@
 # 命令行工具集合
 
-**使用本工具需要go环境**
+注意事项：
+- 使用本工具需要go环境
+- 确保你的环境变量中有`$GOPATH/bin`
+    - mac/linux: `export PATH=$PATH:$GOPATH/bin`
+    - windows: (用户或系统)环境变量的path变量中加`%GOPATH%\bin`
 
 ## 安装
 
