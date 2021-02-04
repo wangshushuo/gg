@@ -9,7 +9,7 @@
 ## 安装
 
 ```
-go get github.com/wangshushuo/gg
+go get github.com/wangshushuo/gg@latest
 ```
 
 ## 命令：mr/pr/r
