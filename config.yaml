@@ -1,0 +1,17 @@
+host:
+  http://www.baidu.com
+privateToken:
+  xnzmdja
+project:
+  - a:
+      id: 12
+      targetBranches:
+        - release
+        - hotfix
+        - feature-budget
+  - b:
+      id: 16
+      targetBranches:
+        - release
+        - hotfix
+        - feature-budget
