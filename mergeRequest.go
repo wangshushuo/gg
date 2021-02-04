@@ -18,10 +18,22 @@ func MergeRequest() cli.Command {
 		Name:    "mr",
 		Aliases: []string{"pr", "r"},
 		Usage:   "post a merge request",
+		Flags: []cli.Flag{
+			&cli.StringFlag{Name: "target", Aliases: []string{"t"}, Usage: "指定目标分支"},
+		},
 		Action: func(c *cli.Context) error {
+			flags := getFlag(c)
 			sourceBranch := readBranchName()
-			targetBranch := getNameOfCurrentBranch()
-			fmt.Printf("The name of current branch is [%s], and it will be the target branch.\n", targetBranch)
+
+			var targetBranch string
+			if t := flags["target"].(string); t != "" {
+				targetBranch = t
+				fmt.Printf("目标分支是【%s】\n", targetBranch)
+			} else {
+				targetBranch = getNameOfCurrentBranch()
+				fmt.Printf("当前分支【%s】将做为目标分支。\n", targetBranch)
+			}
+
 			fmt.Println(" ")
 
 			targetFlag := "-o merge_request.target=" + targetBranch
@@ -96,4 +108,11 @@ func writeToClipboard(messages []string) {
 			break
 		}
 	}
+}
+
+func getFlag(c *cli.Context) map[string]interface{} {
+	flagMap := make(map[string]interface{})
+	flagMap["target"] = c.String("target")
+
+	return flagMap
 }
