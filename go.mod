@@ -1,8 +1,6 @@
-module gg
+module github.com/wangshushuo/gg
 
 go 1.14
-
-replace gg => github.com/wangshushuo/gg v0.1.0 // indirect
 
 require (
 	github.com/atotto/clipboard v0.1.2
