@@ -1,8 +1,14 @@
-## 命令行工具集合
+# 命令行工具集合
 
-主命令：gg
+**使用本工具需要go环境**
 
-### 子命令：mr/pr/r
+## 安装
+
+```
+go get github.com/wangshushuo/gg
+```
+
+## 命令：mr/pr/r
 
 ```shell script
 gg r
