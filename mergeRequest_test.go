@@ -45,11 +45,14 @@ func TestReadBranchName(t *testing.T) {
 		want string
 	}{
 		// TODO: Add test cases.
-
+		{
+			name: "a",
+			want: "b",
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := readBranchName(); got != tt.want {
+			if got := readBranchName(""); got != tt.want {
 				t.Errorf("readBranchName() = %v, want %v", got, tt.want)
 			}
 		})

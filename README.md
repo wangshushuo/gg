@@ -30,4 +30,6 @@ gg r
 
 ```
 gg mr -t feature-budget-2nd
+
+gg mr -s bug-123
 ```
