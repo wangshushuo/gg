@@ -34,4 +34,4 @@ gg mr -t feature-budget-2nd
 gg mr -s bug-123
 ```
 # 开发
-更新代码后 `git tag v0.1.5`
+更新代码后 `git tag v0.1.5` 更新版本号，`git push --tag` 上传版本号
