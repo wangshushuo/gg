@@ -33,3 +33,5 @@ gg mr -t feature-budget-2nd
 
 gg mr -s bug-123
 ```
+# 开发
+更新代码后 `git tag v0.1.5`
