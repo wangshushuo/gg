@@ -24,7 +24,7 @@ func MergeRequest() cli.Command {
 		},
 		Action: func(c *cli.Context) error {
 			flags := getFlag(c)
-			s := flags["source"].(string)
+			s := flags["source"]
 			sourceBranch := readBranchName(s)
 
 			var targetBranch string
@@ -59,9 +59,8 @@ func MergeRequest() cli.Command {
 	return mergeRequest
 }
 
-func readBranchName(sourceBranch string) string {
-	if sourceBranch == "" {
-		//	git log -1 --pretty=%B
+func readBranchName(sourceBranch interface{}) string {
+	if sourceBranch == nil {
 		cmd := exec.Command("git", "log", "-1", "--pretty=%B")
 		out, err := cmd.CombinedOutput()
 		if err != nil {
@@ -72,6 +71,7 @@ func readBranchName(sourceBranch string) string {
 		fmt.Println(gitMessage)
 		return strings.TrimSpace(gitMessage)
 	}
+
 	fmt.Print("输入一个临时分支名：")
 	reader := bufio.NewReader(os.Stdin)
 	branchName, err := reader.ReadString('\n')
