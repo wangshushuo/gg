@@ -38,7 +38,7 @@ func MergeRequest() cli.Command {
 
 			fmt.Println(" ")
 
-			targetFlag := "-o merge_request.target=" + targetBranch
+			targetFlag := fmt.Sprintf("-o merge_request.target=\"%s\"", targetBranch)
 			createFlag := "-o merge_request.create"
 			removeFlag := "-o merge_request.remove_source_branch"
 
