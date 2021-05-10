@@ -21,6 +21,7 @@ func MergeRequest() cli.Command {
 		Flags: []cli.Flag{
 			&cli.StringFlag{Name: "target", Aliases: []string{"t"}, Usage: "指定目标分支"},
 			&cli.StringFlag{Name: "source", Aliases: []string{"s"}, Usage: "来源分支名"},
+			&cli.BoolFlag{Name: "debug", Aliases: []string{"d"}, Usage: "debug"},
 		},
 		Action: func(c *cli.Context) error {
 			flags := getFlag(c)
@@ -41,6 +42,14 @@ func MergeRequest() cli.Command {
 			targetFlag := fmt.Sprintf("-o merge_request.target=\"%s\"", targetBranch)
 			createFlag := "-o merge_request.create"
 			removeFlag := "-o merge_request.remove_source_branch"
+
+			if d := flags["debug"].(bool); d == true {
+				fmt.Println("### debug message start ###")
+				fmt.Println()
+				fmt.Printf("gut push origin head:%s %s %s %s", sourceBranch, targetFlag, createFlag, removeFlag)
+				fmt.Println()
+				fmt.Println("### debug message end ###")
+			}
 
 			cmd := exec.Command("git", "push", "origin", "head:"+sourceBranch, targetFlag, createFlag, removeFlag)
 			out, err := cmd.CombinedOutput()
