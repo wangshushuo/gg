@@ -52,7 +52,7 @@ func MergeRequest() cli.Command {
 				fmt.Println("### debug message end ###")
 
 
-			cmd := exec.Command("git", "push", "origin", "head:"+sourceBranch, targetFlag, createFlag, removeFlag)
+			cmd := exec.Command("git", "push", "origin", "head:\""+sourceBranch+"\"", targetFlag, createFlag, removeFlag)
 			out, err := cmd.CombinedOutput()
 			if err != nil {
 				log.Fatal(err)
