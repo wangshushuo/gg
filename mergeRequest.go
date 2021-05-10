@@ -43,13 +43,14 @@ func MergeRequest() cli.Command {
 			createFlag := "-o merge_request.create"
 			removeFlag := "-o merge_request.remove_source_branch"
 
-			if d := flags["debug"].(string); d != "" {
+			fmt.Println(flags)
+
 				fmt.Println("### debug message start ###")
 				fmt.Println()
 				fmt.Printf("gut push origin head:%s %s %s %s", sourceBranch, targetFlag, createFlag, removeFlag)
 				fmt.Println()
 				fmt.Println("### debug message end ###")
-			}
+
 
 			cmd := exec.Command("git", "push", "origin", "head:"+sourceBranch, targetFlag, createFlag, removeFlag)
 			out, err := cmd.CombinedOutput()
