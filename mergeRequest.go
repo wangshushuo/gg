@@ -30,7 +30,7 @@ func MergeRequest() cli.Command {
 			var targetBranch string
 			if t := flags["target"].(string); t != "" {
 				targetBranch = t
-				fmt.Printf("目标分支是【%s】\n", targetBranch)
+				fmt.Printf("目标分支是：【%s】\n", targetBranch)
 			} else {
 				targetBranch = getNameOfCurrentBranch()
 				fmt.Printf("当前分支【%s】将做为目标分支。\n", targetBranch)
