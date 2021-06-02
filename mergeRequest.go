@@ -43,6 +43,9 @@ func MergeRequest() cli.Command {
 			removeFlag := "-o merge_request.remove_source_branch"
 
 			cmd := exec.Command("git", "push", "origin", "head:"+sourceBranch, targetFlag, createFlag, removeFlag)
+			str := cmd.String()
+			fmt.Printf("Command: %s", str)
+			fmt.Println(" ")
 			out, err := cmd.CombinedOutput()
 			if err != nil {
 				log.Fatal(err)
