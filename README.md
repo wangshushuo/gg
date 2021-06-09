@@ -35,3 +35,13 @@ gg mr -s bug-123
 ```
 # 开发
 更新代码后 `git tag v0.1.5` 更新版本号，`git push --tag` 上传版本号
+
+
+## 原理
+
+```shell
+git push origin head:temp_branch_name1 \
+-o merge_request.target=feature-multi-org2 \
+-o merge_request.create \
+-o merge_request.remove_source_branch
+```

@@ -9,7 +9,9 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"strconv"
 	"strings"
+	"time"
 )
 
 func MergeRequest() cli.Command {
@@ -24,8 +26,8 @@ func MergeRequest() cli.Command {
 		},
 		Action: func(c *cli.Context) error {
 			flags := getFlag(c)
-			s := flags["source"]
-			sourceBranch := readBranchName(s)
+			//s := flags["source"]
+			sourceBranch := "temp_branch_" + strconv.FormatInt(time.Now().UnixNano(), 10)
 
 			var targetBranch string
 			if t := flags["target"].(string); t != "" {
@@ -53,6 +55,7 @@ func MergeRequest() cli.Command {
 
 			gitMessage := string(out)
 			fmt.Println(gitMessage)
+			fmt.Println("成功了")
 			messages := strings.Fields(gitMessage)
 			writeToClipboard(messages)
 			return nil
