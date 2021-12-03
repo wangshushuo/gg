@@ -39,26 +39,6 @@ func TestMergeRequest(t *testing.T) {
 	}
 }
 
-func TestReadBranchName(t *testing.T) {
-	tests := []struct {
-		name string
-		want string
-	}{
-		// TODO: Add test cases.
-		{
-			name: "a",
-			want: "b",
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := readBranchName(""); got != tt.want {
-				t.Errorf("readBranchName() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
 func TestPickCurrentBranch(t *testing.T) {
 	type args struct {
 		branchesString string
@@ -85,6 +65,25 @@ aaa
 		t.Run(tt.name, func(t *testing.T) {
 			if got := pickCurrentBranch(tt.args.branchesString); got != tt.want {
 				t.Errorf("pickCurrentBranch() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_getNameOfCurrentBranch(t *testing.T) {
+	tests := []struct {
+		name string
+		want string
+	}{
+		{
+			name: "当前分支名",
+			want: "master",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := getNameOfCurrentBranch(); got != tt.want {
+				t.Errorf("getNameOfCurrentBranch() = %v, want %v", got, tt.want)
 			}
 		})
 	}

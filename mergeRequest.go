@@ -1,13 +1,11 @@
 package main
 
 import (
-	"bufio"
 	"bytes"
 	"fmt"
 	"github.com/atotto/clipboard"
 	"github.com/urfave/cli/v2"
 	"log"
-	"os"
 	"os/exec"
 	"strings"
 )
@@ -24,31 +22,25 @@ func MergeRequest() cli.Command {
 		},
 		Action: func(c *cli.Context) error {
 			flags := getFlag(c)
-			s := flags["source"].(string)
-			sourceBranch := readBranchName(s)
-
+			var sourceBranch string
 			var targetBranch string
-			if t := flags["target"].(string); t != "" {
-				targetBranch = t
-				fmt.Printf("目标分支是【%s】\n", targetBranch)
+			if s := flags["source"]; s != nil && s.(string) != "" {
+				sourceBranch = s.(string)
+			} else {
+				sourceBranch = tempBranchName()
+			}
+			if t := flags["target"]; t != nil && t.(string) != "" {
+				targetBranch = t.(string)
 			} else {
 				targetBranch = getNameOfCurrentBranch()
-				fmt.Printf("当前分支【%s】将做为目标分支。\n", targetBranch)
 			}
 
-			fmt.Println(" ")
+			fmt.Println("发起MR")
+			fmt.Println("临时分支: " + sourceBranch)
+			fmt.Println("目标分支: " + targetBranch)
 
-			targetFlag := "-o merge_request.target=" + targetBranch
-			createFlag := "-o merge_request.create"
-			removeFlag := "-o merge_request.remove_source_branch"
-
-			cmd := exec.Command("git", "push", "origin", "head:"+sourceBranch, targetFlag, createFlag, removeFlag)
-			out, err := cmd.CombinedOutput()
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			gitMessage := string(out)
+			gitMessage := fetchMergeRequest(sourceBranch, targetBranch)
+			//gitMessage := "1"
 			fmt.Println(gitMessage)
 			messages := strings.Fields(gitMessage)
 			writeToClipboard(messages)
@@ -57,28 +49,6 @@ func MergeRequest() cli.Command {
 	}
 
 	return mergeRequest
-}
-
-func readBranchName(sourceBranch string) string {
-	if sourceBranch == "" {
-		//	git log -1 --pretty=%B
-		cmd := exec.Command("git", "log", "-1", "--pretty=%B")
-		out, err := cmd.CombinedOutput()
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		gitMessage := string(out)
-		fmt.Println(gitMessage)
-		return strings.TrimSpace(gitMessage)
-	}
-	fmt.Print("输入一个临时分支名：")
-	reader := bufio.NewReader(os.Stdin)
-	branchName, err := reader.ReadString('\n')
-	if err != nil {
-		log.Fatal(err)
-	}
-	return strings.TrimSpace(branchName)
 }
 
 func getNameOfCurrentBranch() string {
@@ -127,6 +97,7 @@ func writeToClipboard(messages []string) {
 func getFlag(c *cli.Context) map[string]interface{} {
 	flagMap := make(map[string]interface{})
 	flagMap["target"] = c.String("target")
+	flagMap["source"] = c.String("source")
 
 	return flagMap
 }
