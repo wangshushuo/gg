@@ -1,0 +1,60 @@
+name: Build
+
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+
+env:
+  BUILD_TIME: $(date -u +%Y-%m-%dT%H:%M:%SZ)
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        go-version: ['1.15.x', '1.16.x']
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: ${{ matrix.go-version }}
+    - name: Build Executable
+      run: go build -o myapp_windows.exe .
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: myapp_windows
+        path: myapp_windows.exe
+  build-macos:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build Executable
+      run: |
+        export CGO_ENABLED=1
+        export GOOS=darwin
+        export GOARCH=amd64
+        export CC=o64-clang
+        export CXX=o64-clang++
+        go build -o myapp_macos .
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body: Release build created at ${BUILD_TIME}.
+        draft: false
+        prerelease: false
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: myapp_macos
+        path: myapp_macos
