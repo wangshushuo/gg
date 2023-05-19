@@ -34,4 +34,4 @@ jobs:
         with:
           asset_path: ./myapp.zip
           asset_name: myapp-${{ env.GOOS }}-${{ env.GOARCH }}-${{ github.sha }}.zip
-          tag: ${{ github.ref }}
+          tag: 'v1.0.1'
