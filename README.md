@@ -1,3 +1,5 @@
+https://github.com/wangshushuo/gg/actions/runs/run-id/artifacts/branch-name
+
 # 命令行工具集合
 
 注意事项：

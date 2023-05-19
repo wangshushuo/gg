@@ -1,49 +1,37 @@
-name: Build
+name: Build and release
 
 on:
-  push:
-    branches:
-    - master
-  pull_request:
-    branches:
-    - master
+  release:
+    types: [created]
 
 env:
-  BUILD_TIME: $(date -u +%Y-%m-%dT%H:%M:%SZ)
+  GOOS: linux # we will build for linux in this example
+  GOARCH: amd64
 
 jobs:
-  build-windows:
-    runs-on: windows-latest
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        go-version: ['1.15.x', '1.16.x']
+        os: [macos-latest, windows-latest]
+        go-version: ['1.14.x']
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: ${{ matrix.go-version }}
-    - name: Build Executable
-      run: go build -o myapp_windows.exe .
-    - name: Upload artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: myapp_windows
-        path: myapp_windows.exe
-  build-macos:
-    runs-on: macos-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Build Executable
-      run: |
-        export CGO_ENABLED=1
-        export GOOS=darwin
-        export GOARCH=amd64
-        export CC=o64-clang
-        export CXX=o64-clang++
-        go build -o myapp_macos .
-    - name: Upload artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: myapp_macos
-        path: myapp_macos
+      - name: Checkout code
+        uses: actions/checkout@v1
+      - name: Set up Go
+        uses: actions/setup-go@v1
+        with:
+          go-version: ${{ matrix.go-version }}
+      - name: Build executable
+        run: |
+          go build -o myapp
+          zip myapp.zip myapp
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          asset_path: ./myapp.zip
+          asset_name: myapp-${{ env.GOOS }}-${{ env.GOARCH }}-${{ github.sha }}.zip
+          tag: ${{ github.ref }}
