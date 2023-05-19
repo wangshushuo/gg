@@ -32,6 +32,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          upload_url: ${{ github.event.release.upload_url }}
           asset_path: ./myapp.zip
           asset_name: myapp-${{ env.GOOS }}-${{ env.GOARCH }}-${{ github.sha }}.zip
-          tag: 'v1.0.1'
+          tag: ${{ github.ref }}
