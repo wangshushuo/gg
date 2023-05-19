@@ -44,6 +44,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ github.event.release.upload_url }}
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./myapp.zip
           asset_name: myapp-${{ env.GOOS }}-${{ env.GOARCH }}-${{ github.sha }}.zip
