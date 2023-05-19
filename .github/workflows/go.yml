@@ -1,8 +1,10 @@
 name: Build and release
 
 on:
-  release:
-    types: [created]
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 env:
   GOOS: linux # we will build for linux in this example
@@ -27,6 +29,16 @@ jobs:
         run: |
           go build -o myapp
           zip myapp.zip myapp
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
         env:
