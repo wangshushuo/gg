@@ -35,4 +35,3 @@ jobs:
           upload_url: ${{ github.event.release.upload_url }}
           asset_path: ./myapp.zip
           asset_name: myapp-${{ env.GOOS }}-${{ env.GOARCH }}-${{ github.sha }}.zip
-          tag: ${{ github.ref }}
