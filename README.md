@@ -11,8 +11,8 @@ https://github.com/wangshushuo/gg/actions/runs/run-id/artifacts/branch-name
 ## 安装
 
 ```
-GO111MODULE=on go get github.com/wangshushuo/gg@latest
-go get github.com/wangshushuo/gg@latest
+go install github.com/wangshushuo/gg@latest
+GO111MODULE=on go install github.com/wangshushuo/gg@latest
 ```
 
 ## 命令：mr/pr/r
