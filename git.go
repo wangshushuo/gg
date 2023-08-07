@@ -38,12 +38,14 @@ func nameOfCurrentBranch() string {
 	return branch
 }
 
-func fetchMergeRequest(source, target string) string {
+// fetchMergeRequest 参数文档 https://docs.gitlab.cn/jh/user/project/push_options.html
+func fetchMergeRequest(source, target, assign string) string {
 	targetFlag := "-o merge_request.target=" + target
 	createFlag := "-o merge_request.create"
 	removeFlag := "-o merge_request.remove_source_branch"
+	assignFlag := "-o merge_request.assign=" + assign
 
-	cmd := exec.Command("git", "push", "origin", "head:"+source, targetFlag, createFlag, removeFlag)
+	cmd := exec.Command("git", "push", "origin", "head:"+source, targetFlag, createFlag, removeFlag, assignFlag)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		log.Fatal(err)

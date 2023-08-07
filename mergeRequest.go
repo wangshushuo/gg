@@ -19,11 +19,13 @@ func MergeRequest() cli.Command {
 		Flags: []cli.Flag{
 			&cli.StringFlag{Name: "target", Aliases: []string{"t"}, Usage: "指定目标分支"},
 			&cli.StringFlag{Name: "source", Aliases: []string{"s"}, Usage: "来源分支名"},
+			&cli.StringFlag{Name: "assign", Aliases: []string{"a"}, Usage: "指派"},
 		},
 		Action: func(c *cli.Context) error {
 			flags := getFlag(c)
 			var sourceBranch string
 			var targetBranch string
+			var assign string
 			if s := flags["source"]; s != nil && s.(string) != "" {
 				sourceBranch = s.(string)
 			} else {
@@ -38,8 +40,10 @@ func MergeRequest() cli.Command {
 			fmt.Println("发起MR")
 			fmt.Println("临时分支: " + sourceBranch)
 			fmt.Println("目标分支: " + targetBranch)
+			fmt.Println("目标分支: " + targetBranch)
+			fmt.Println("指    派: " + assign)
 
-			gitMessage := fetchMergeRequest(sourceBranch, targetBranch)
+			gitMessage := fetchMergeRequest(sourceBranch, targetBranch, assign)
 			//gitMessage := "1"
 			fmt.Println(gitMessage)
 			messages := strings.Fields(gitMessage)
