@@ -26,6 +26,9 @@ func MergeRequest() cli.Command {
 			var sourceBranch string
 			var targetBranch string
 			var assign string
+			if s := flags["assign"]; s != nil && s.(string) != "" {
+				assign = s.(string)
+			}
 			if s := flags["source"]; s != nil && s.(string) != "" {
 				sourceBranch = s.(string)
 			} else {
