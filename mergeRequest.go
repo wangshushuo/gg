@@ -22,21 +22,15 @@ func MergeRequest() cli.Command {
 			&cli.StringFlag{Name: "assign", Aliases: []string{"a"}, Usage: "指派"},
 		},
 		Action: func(c *cli.Context) error {
-			flags := getFlag(c)
-			var sourceBranch string
-			var targetBranch string
-			var assign string
-			if s := flags["assign"]; s != nil && s.(string) != "" {
-				assign = s.(string)
-			}
-			if s := flags["source"]; s != nil && s.(string) != "" {
-				sourceBranch = s.(string)
-			} else {
+			var sourceBranch = c.String("target")
+			var targetBranch = c.String("source")
+			var assign = c.String("assign")
+
+			if sourceBranch == "" {
 				sourceBranch = tempBranchName()
 			}
-			if t := flags["target"]; t != nil && t.(string) != "" {
-				targetBranch = t.(string)
-			} else {
+
+			if targetBranch == "" {
 				targetBranch = getNameOfCurrentBranch()
 			}
 
@@ -105,6 +99,7 @@ func getFlag(c *cli.Context) map[string]interface{} {
 	flagMap := make(map[string]interface{})
 	flagMap["target"] = c.String("target")
 	flagMap["source"] = c.String("source")
+	flagMap["assign"] = c.String("assign")
 
 	return flagMap
 }
